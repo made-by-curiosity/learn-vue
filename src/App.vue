@@ -9,7 +9,7 @@
   const doneTasksCount = computed(() => tasksList.value.filter(task => task.done).length)
 
   function handleAddTask(newTask: string) {
-    tasksList.value.push({
+    tasksList.value.unshift({
       id: crypto.randomUUID(),
       title: newTask,
       done: false
@@ -23,6 +23,10 @@
       task.done = !task.done
     }
   }
+
+  function handleTaskRemove(taskId: string) {
+    tasksList.value = tasksList.value.filter(task => task.id !== taskId)
+  }
 </script>
 
 <template>
@@ -35,6 +39,7 @@
       <TaskList
         :tasks-list
         @toggle-done="handleToggleDone"
+        @remove-task="handleTaskRemove"
       />
     </div>
   </main>

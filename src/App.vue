@@ -1,11 +1,12 @@
 <script lang="ts" setup>
-  import { ref } from 'vue';
+  import { computed, ref } from 'vue';
   import TaskForm from './components/TaskForm.vue'
   import TaskList from './components/TaskList.vue';
   import type { Task } from './types/types';
 
   const message = ref('Tasks app');
   const tasksList = ref<Task[]>([]);
+  const doneTasksCount = computed(() => tasksList.value.filter(task => task.done).length)
 
   function handleAddTask(newTask: string) {
     tasksList.value.push({
@@ -13,6 +14,14 @@
       title: newTask,
       done: false
     })
+  }
+
+  function handleToggleDone(taskId: string) {
+    const task = tasksList.value.find(task => task.id === taskId);
+
+    if (task) {
+      task.done = !task.done
+    }
   }
 </script>
 
@@ -22,8 +31,11 @@
     <TaskForm @add-task-triggered="handleAddTask" />
     <div>
       <h3 v-if="!tasksList.length">Add a task to get started</h3>
-      <h3 v-else>0 / {{ tasksList.length }} tasks completed.</h3>
-      <TaskList :tasks-list />
+      <h3 v-else>{{ doneTasksCount }} / {{ tasksList.length }} tasks completed.</h3>
+      <TaskList
+        :tasks-list
+        @toggle-done="handleToggleDone"
+      />
     </div>
   </main>
 </template>

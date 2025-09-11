@@ -20,25 +20,30 @@
 </script>
 
 <template>
-    <article
-        class="task"
-        v-for="task in props.tasksList"
-        :key="task.id"
+    <TransitionGroup
+        name="list"
+        tag="div"
     >
-        <label>
-            <input
-                type="checkbox"
-                @change="toggleDone(task.id)"
-                :checked="task.done"
-            >
-            <span :class="{ 'task-done': task.done }">{{ task.title }}</span>
-        </label>
-        <button
-            type="button"
-            class="outline"
-            @click="removeTask(task.id)"
-        >Remove</button>
-    </article>
+        <article
+            class="task"
+            v-for="task in props.tasksList"
+            :key="task.id"
+        >
+            <label>
+                <input
+                    type="checkbox"
+                    @change="toggleDone(task.id)"
+                    :checked="task.done"
+                >
+                <span :class="{ 'task-done': task.done }">{{ task.title }}</span>
+            </label>
+            <button
+                type="button"
+                class="outline"
+                @click="removeTask(task.id)"
+            >Remove</button>
+        </article>
+    </TransitionGroup>
 </template>
 
 <style scoped>
@@ -50,5 +55,16 @@
 
     .task-done {
         text-decoration: line-through;
+    }
+
+    .list-enter-active,
+    .list-leave-active {
+        transition: all 0.5s ease
+    }
+
+    .list-enter-from,
+    .list-leave-to {
+        opacity: 0;
+        transform: translateX(30px)
     }
 </style>

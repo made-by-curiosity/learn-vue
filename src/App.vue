@@ -2,6 +2,7 @@
   import { computed, ref } from 'vue';
   import TaskForm from './components/TaskForm.vue'
   import TaskList from './components/TaskList.vue';
+  import TasksFilter from './components/TasksFilter.vue';
   import type { Task } from './types/types';
 
   const message = ref('Tasks app');
@@ -36,6 +37,7 @@
     <div>
       <h3 v-if="!tasksList.length">Add a task to get started</h3>
       <h3 v-else>{{ doneTasksCount }} / {{ tasksList.length }} tasks completed.</h3>
+      <TasksFilter v-if="tasksList.length" />
       <TaskList
         :tasks-list
         @toggle-done="handleToggleDone"
